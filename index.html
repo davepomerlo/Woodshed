@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Woodshed</title>
+<meta name="description" content="Electric guitar practice: session planner, jam backing, chords, scales, technique drills and a practice log.">
+<meta name="theme-color" content="#3A281E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Woodshed">
+<style>
+/* base reset (what the Claude page wrapper used to provide) */
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); color-scheme: light; }
+body { margin: 0; -webkit-tap-highlight-color: transparent; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #E9ECEE; --surface: #FFFFFF; --surface-2: #F4F6F7; --ink: #15191D; --muted: #5A646E; --line: #D3D9DE;
+  --accent: #B8560F; --accent-ink: #FFFFFF; --accent-soft: #F6E3D3;
+  --tone: #0E7A6E; --tone-soft: #D5EEEA;
+  --good: #2F7D32; --warn: #A15C00;
+  --wood: #3A281E; --wood-2: #2E1F17; --fret: #B9C0C7; --string: #D8CFBE; --inlay: #E8E1D2; --scale-dot: #EFE9DC; --scale-ink: #2A1E17;
+  --shadow: 0 1px 2px rgba(20,25,30,.06), 0 4px 16px rgba(20,25,30,.06);
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111416; --surface: #1A1F23; --surface-2: #22282D; --ink: #E7EAEC; --muted: #9AA4AD; --line: #2E363C;
+    --accent: #F0922F; --accent-ink: #1A1206; --accent-soft: #3A2716;
+    --tone: #3CC7B4; --tone-soft: #15332F; --good: #6CC070; --warn: #E0A040;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111416; --surface: #1A1F23; --surface-2: #22282D; --ink: #E7EAEC; --muted: #9AA4AD; --line: #2E363C;
+  --accent: #F0922F; --accent-ink: #1A1206; --accent-soft: #3A2716;
+  --tone: #3CC7B4; --tone-soft: #15332F; --good: #6CC070; --warn: #E0A040;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font: 15px/1.5 var(--sans); padding-inline: 16px; padding-block: 0 48px; }
+button, select, input, textarea { font: inherit; color: inherit; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+/* Top bar */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); margin-inline: -16px; padding: 10px 16px 0; border-bottom: 1px solid var(--line); }
+.top-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; max-width: 1180px; margin: 0 auto; }
+.brand { font-family: var(--display); font-weight: 800; font-size: 30px; letter-spacing: .02em; text-transform: uppercase; line-height: 1; }
+.brand small { display: block; font: 500 11px/1.2 var(--sans); letter-spacing: .12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; }
+.metro { margin-left: auto; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.metro .bpm { width: 76px; text-align: center; font: 600 18px var(--mono); font-variant-numeric: tabular-nums; }
+.beats { display: flex; gap: 4px; align-items: center; min-width: 60px; }
+.beats i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); display: block; transition: background .05s; }
+.beats i.g { outline: 1px solid var(--muted); outline-offset: 1px; }
+.beats i.on { background: var(--accent); }
+nav.tabs { display: flex; gap: 2px; overflow-x: auto; max-width: 1180px; margin: 10px auto 0; scrollbar-width: none; }
+nav.tabs button { background: none; border: 0; padding: 9px 14px 11px; font-weight: 500; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+nav.tabs button:hover { color: var(--ink); }
+
+/* Controls */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); padding: 7px 12px; border-radius: 8px; cursor: pointer; font-weight: 500; min-height: 36px; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.icon { width: 36px; padding: 0; }
+.btn.small { min-height: 30px; padding: 4px 10px; font-size: 13px; }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+select, input[type=number], input[type=text], input[type=date], textarea { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; min-height: 36px; max-width: 100%; }
+input[type=range] { accent-color: var(--accent); }
+textarea { width: 100%; min-height: 70px; resize: vertical; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+label.f { display: grid; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .02em; }
+label.f > span { text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 11px; font-size: 13px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* Layout */
+main section { display: none; padding-top: 22px; }
+main section.active { display: block; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; box-shadow: var(--shadow); }
+.panel + .panel { margin-top: 18px; }
+.stack { display: grid; gap: 14px; }
+.h { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; font-size: 26px; line-height: 1.05; }
+.h2 { font-weight: 600; font-size: 16px; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 600; }
+.muted { color: var(--muted); }
+.lede { color: var(--muted); max-width: 62ch; margin: 6px 0 0; }
+.mono { font-family: var(--mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Fretboard */
+.fb-wrap { overflow-x: auto; border-radius: 8px; -webkit-overflow-scrolling: touch; }
+.fb-wrap svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.fb-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.fb-legend b { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -2px; margin-right: 5px; }
+
+/* Chord diagrams */
+.chord-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.chord-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 10px 10px; cursor: pointer; text-align: center; display: grid; gap: 4px; }
+.chord-card:hover { border-color: var(--accent); }
+.chord-card .nm { font-weight: 600; font-size: 17px; }
+.chord-card .sh { font-size: 12px; color: var(--muted); line-height: 1.3; }
+.chord-card svg { width: 100%; max-width: 130px; margin: 0 auto; height: auto; }
+
+/* Jam */
+.prog-strip { display: flex; gap: 8px; flex-wrap: wrap; }
+.pchord { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; min-width: 76px; background: var(--surface-2); position: relative; overflow: hidden; }
+.pchord .rn { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.pchord .cn { font-weight: 600; font-size: 18px; }
+.pchord .bt { font-size: 11px; color: var(--muted); }
+.pchord.now { border-color: var(--accent); background: var(--accent-soft); }
+.pchord .bar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--accent); width: 0; }
+.now-card { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.now-name { font-family: var(--display); font-weight: 800; font-size: 56px; line-height: .9; min-width: 150px; }
+.now-name small { display: block; font: 500 13px var(--mono); color: var(--muted); margin-top: 6px; }
+.prompt { border-left: 4px solid var(--tone); background: var(--tone-soft); padding: 12px 14px; border-radius: 0 8px 8px 0; }
+.prompt .eyebrow { color: var(--tone); }
+.prompt p { margin: 4px 0 0; font-size: 16px; font-weight: 500; }
+
+/* Technique */
+.drill-list { display: grid; gap: 6px; max-height: 620px; overflow: auto; padding-right: 4px; }
+.drill-item { text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 9px 12px; cursor: pointer; display: grid; gap: 2px; }
+.drill-item[aria-selected="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.drill-item .t { font-weight: 600; }
+.drill-item .m { font-size: 12px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+.tag { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.tag.r { border-color: var(--accent); color: var(--accent); }
+.tag.l { border-color: var(--tone); color: var(--tone); }
+pre.tab { font: 14px/1.35 var(--mono); background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; margin: 0; white-space: pre; }
+ol.how { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+
+/* Today */
+.block-list { display: grid; gap: 8px; counter-reset: b; }
+.block { display: grid; grid-template-columns: 54px 1fr auto; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--surface); }
+.block.cur { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.block.done { opacity: .55; }
+.block .min { font: 600 20px var(--mono); font-variant-numeric: tabular-nums; }
+.block .min small { font-size: 11px; color: var(--muted); display: block; font-weight: 400; }
+.block .what b { display: block; }
+.block .what span { font-size: 13px; color: var(--muted); }
+.timer { font: 500 64px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.stat .v { font: 600 24px var(--mono); font-variant-numeric: tabular-nums; }
+.stat .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+/* Log */
+.hist { display: grid; gap: 8px; }
+.hist-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; }
+.hist-item .d { font-weight: 600; }
+.chart svg { width: 100%; height: auto; display: block; }
+.note { font-size: 12px; color: var(--muted); }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 8px; font-weight: 500; z-index: 50; }
+.quiz-target { font-family: var(--display); font-weight: 800; font-size: 34px; }
+
+@media (max-width: 860px) {
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .metro { margin-left: 0; width: 100%; }
+  .now-name { font-size: 44px; }
+  .timer { font-size: 52px; }
+  .drill-list { max-height: 300px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-row">
+    <div class="brand">Woodshed<small>Electric guitar practice</small></div>
+    <div class="metro" aria-label="Metronome">
+      <button class="btn icon primary" id="m-play" aria-label="Start metronome" title="Start / stop (space)">▶</button>
+      <button class="btn icon" id="m-down" aria-label="Slower">−</button>
+      <input class="bpm" id="m-bpm" type="number" min="20" max="320" value="90" aria-label="Tempo in BPM">
+      <button class="btn icon" id="m-up" aria-label="Faster">+</button>
+      <select id="m-meter" aria-label="Time signature">
+        <option>4/4</option><option>3/4</option><option>5/4</option><option>6/8</option><option>7/8</option><option>9/8</option><option>11/8</option><option>7/4</option>
+      </select>
+      <select id="m-sub" aria-label="Click subdivision">
+        <option value="1">♩ beats</option><option value="2">♪ 8ths</option><option value="3">triplets</option><option value="4">16ths</option>
+      </select>
+      <button class="btn small" id="m-tap" title="Tap tempo">Tap</button>
+      <button class="btn small" id="m-click" aria-pressed="true" title="Click on or off">Click</button>
+      <div class="beats" id="m-beats" aria-hidden="true"></div>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="today" aria-selected="true">Today</button>
+    <button role="tab" data-tab="jam">Jam &amp; improvise</button>
+    <button role="tab" data-tab="chords">Chords</button>
+    <button role="tab" data-tab="fretboard">Scales &amp; fretboard</button>
+    <button role="tab" data-tab="technique">Technique</button>
+    <button role="tab" data-tab="log">Log</button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section id="today" class="active"><p class="muted">Loading where you left off…</p></section>
+  <section id="jam"></section>
+  <section id="chords"></section>
+  <section id="fretboard"></section>
+  <section id="technique"></section>
+  <section id="log"></section>
+</main>
+
+<script src="theory.js"></script>
+<script src="data.js"></script>
+<script src="audio.js"></script>
+<script src="store.js"></script>
+<script src="resume.js"></script>
+<script src="ui-core.js"></script>
+<script src="views-a.js"></script>
+<script src="views-b.js"></script>
+<script src="views-c.js"></script>
+<script src="standalone.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "Woodshed — Guitar Practice",
+  "short_name": "Woodshed",
+  "description": "Electric guitar practice: session planner, jam backing, chords, scales, technique drills and a practice log.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#2E1F17",
+  "theme_color": "#3A281E",
+  "categories": ["music", "education"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
